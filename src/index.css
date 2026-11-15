@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Heebo", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html, body { font-family: var(--font-sans); }
+body { background: #f8fafc; }
+
+input[type="range"] { accent-color: #1d4ed8; }
+
+.num { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}
