@@ -161,3 +161,13 @@ select {
   body { background: white; }
   .grain::after { display: none; }
 }
+
+/* Logo animation */
+.logo-animated .logo-tile { transform-box: fill-box; transform-origin: center; animation: logo-tile 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 110ms); }
+.logo-animated .logo-arc { stroke-dasharray: 400; stroke-dashoffset: 400; animation: logo-draw 0.9s ease-out 0.55s forwards; }
+.logo-animated .logo-dot { opacity: 0; animation: fade 0.3s ease-out both; animation-delay: calc(0.5s + var(--i, 0) * 0.8s); }
+@keyframes logo-tile { from { opacity: 0; transform: translateY(10px) scale(0.92); } to { opacity: 1; transform: none; } }
+@keyframes logo-draw { to { stroke-dashoffset: 0; } }
+
+/* Presenter card */
+.presenter-ring { background: conic-gradient(from 0deg, #ff7a59, #f4c542, #8fcf7a, #9fd0ff, #b7a4f0, #2b3cff, #ff7a59); }

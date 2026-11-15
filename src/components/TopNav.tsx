@@ -4,6 +4,7 @@ import { useAppStore } from '../store/useAppStore';
 import { PRESETS } from '../data/presets';
 import type { WorkflowStage } from '../types/strategy';
 import { Badge } from './ui';
+import { Logo } from './Logo';
 
 const STAGES: { id: WorkflowStage; label: string; short: string }[] = [
   { id: 1, label: 'אבחון', short: 'אבחון' },
@@ -30,13 +31,10 @@ export function TopNav() {
   return (
     <header className="no-print sticky top-0 z-40 border-b border-line/80 bg-paper/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
-        <button onClick={() => setStage(1)} className="flex items-center gap-2.5" title="לדף הפתיחה">
-          <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-xl bg-ink">
-            <span className="animate-spin-slow absolute -inset-2 bg-[conic-gradient(from_0deg,#ff7a59,#f4c542,#8fcf7a,#9fd0ff,#b7a4f0,#2b3cff,#ff7a59)] opacity-90" />
-            <span className="relative h-3.5 w-3.5 rounded-full bg-ink ring-2 ring-paper/90" />
-          </span>
-          <span className="leading-none">
-            <span className="display block text-[17px] font-black tracking-tight text-ink">ROI Simulator</span>
+        <button onClick={() => setStage(1)} className="flex items-center gap-3" title="לדף הפתיחה">
+          <Logo variant="nav" animated={false} />
+          <span className="hidden leading-none sm:block">
+            <span className="display block text-[16px] font-black tracking-tight text-ink">ROI Simulator</span>
             <span className="block text-[10px] font-semibold tracking-[0.16em] text-mute">אסטרטגיית AI</span>
           </span>
         </button>

@@ -37,7 +37,7 @@ const smoothstep = (x: number) => { const c = Math.min(1, Math.max(0, x)); retur
 
 interface Dot { u: number; d: number; band: number; size: number; jitter: number; mix: number; drift: number }
 
-export function GenerativeLandscape({ className = '', density = 1 }: { className?: string; density?: number }) {
+export function GenerativeLandscape({ className = '', density = 1, overlay = false }: { className?: string; density?: number; overlay?: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -69,6 +69,9 @@ export function GenerativeLandscape({ className = '', density = 1 }: { className
 
     const draw = (now: number) => {
       const t = reduced ? 40 : (now - t0) / 1000;
+      if (overlay) {
+        ctx.clearRect(0, 0, W, H);
+      } else {
       // sky
       const sky = ctx.createLinearGradient(0, 0, 0, H);
       sky.addColorStop(0, '#f6f3ec');
@@ -110,6 +113,7 @@ export function GenerativeLandscape({ className = '', density = 1 }: { className
         const light = 0.9 + d.d * 0.22;
         ctx.fillStyle = `rgba(${Math.min(255, r * light) | 0},${Math.min(255, g * light) | 0},${Math.min(255, bl * light) | 0},0.9)`;
         ctx.fillRect(x, y, d.size, d.size);
+      }
       }
 
       // adoption S-curve drawing itself across the sky (LTR, like the charts); on phones the text fills the sky, so skip it
@@ -158,7 +162,7 @@ export function GenerativeLandscape({ className = '', density = 1 }: { className
     io.observe(canvas);
     raf = requestAnimationFrame(draw);
     return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
-  }, [density]);
+  }, [density, overlay]);
 
   return <canvas ref={ref} aria-hidden className={`block h-full w-full ${className}`} />;
 }

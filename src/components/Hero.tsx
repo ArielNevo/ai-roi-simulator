@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import { ArrowDown, ArrowLeft, Building2, Landmark, Scale } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { PRESETS } from '../data/presets';
 import { nimbusStats } from '../data/nimbus';
 import { TOOL_CATALOG } from '../data/toolCatalog';
 import { GenerativeLandscape } from './GenerativeLandscape';
+import { Logo } from './Logo';
+import { Presenter } from './Presenter';
 import { Button } from './ui';
+
+const MEDIA = `${import.meta.env.BASE_URL}media/`.replace(/\/{2,}/g, '/');
 
 const ICONS = { university: Building2, government: Landmark, law: Scale };
 
@@ -16,6 +21,7 @@ const QUESTIONS: { q: string; presetId: string }[] = [
 
 export function Hero({ onStart }: { onStart: () => void }) {
   const loadPreset = useAppStore((s) => s.loadPreset);
+  const [videoOk, setVideoOk] = useState(true);
   const stats = nimbusStats();
   const facts = [
     { n: PRESETS.length, label: 'תרחישים ישראליים מוכנים' },
@@ -27,9 +33,27 @@ export function Hero({ onStart }: { onStart: () => void }) {
   return (
     <div className="space-y-5">
       <section className="grain relative overflow-hidden rounded-[2rem] border border-line bg-paper-2 shadow-[0_30px_80px_-50px_rgba(20,22,26,0.5)]">
-        <div className="absolute inset-0"><GenerativeLandscape /></div>
+        <div className="absolute inset-0">
+          {videoOk ? (
+            <>
+              <video
+                className="animate-fade h-full w-full object-cover"
+                autoPlay muted loop playsInline preload="auto"
+                poster={`${MEDIA}hero-poster.jpg`}
+                onError={() => setVideoOk(false)}
+                aria-hidden
+              >
+                <source src={`${MEDIA}hero-loop.mp4`} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-l from-paper/55 via-paper/10 to-transparent lg:from-paper/40" />
+            </>
+          ) : (
+            <GenerativeLandscape />
+          )}
+        </div>
         <div className="relative grid min-h-[560px] grid-cols-1 content-start gap-6 p-7 pb-12 md:p-12 lg:min-h-[600px] lg:grid-cols-12">
           <div className="animate-rise lg:col-span-7">
+            <div className="mb-5"><Logo variant="nav" className="h-7" /></div>
             <div className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper/80 px-3 py-1 text-[11px] font-semibold tracking-wide text-ink-2 backdrop-blur">
               <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60" /><span className="relative inline-flex h-2 w-2 rounded-full bg-signal" /></span>
               סימולטור אסטרטגיית AI והחזר השקעה · גרסת הרצאה
@@ -50,6 +74,7 @@ export function Hero({ onStart }: { onStart: () => void }) {
           </div>
 
           <div className="stagger flex flex-col gap-2 self-end lg:col-span-5 lg:items-end">
+            <div style={{ '--i': 2 } as React.CSSProperties} className="mb-2 w-full lg:w-[26rem]"><Presenter /></div>
             {QUESTIONS.map((x, i) => (
               <button key={x.q} style={{ '--i': i + 3 } as React.CSSProperties} onClick={() => loadPreset(x.presetId)} className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-ink/10 bg-paper/85 px-4 py-3 text-start text-sm font-medium text-ink shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-ink hover:shadow-md lg:w-[26rem]">
                 <span>{x.q}</span>
@@ -67,6 +92,17 @@ export function Hero({ onStart }: { onStart: () => void }) {
             <div className="mt-0.5 text-xs text-mute">{f.label}</div>
           </div>
         ))}
+      </div>
+
+      <div className="animate-rise grid items-center gap-6 rounded-[var(--radius-card)] border border-line bg-white/60 p-6 md:grid-cols-2 md:p-8">
+        <div className="flex justify-center md:justify-start"><Logo variant="hero" /></div>
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mute">השיטה</div>
+          <h3 className="mt-2 text-2xl font-bold leading-snug">מדאטה לתובנה, מתובנה להחלטה, ומהחלטה לאימפקט</h3>
+          <p className="mt-2 text-sm leading-relaxed text-ink-2">
+            ארבע האריחים הם ארבעת שלבי הסימולטור: נתוני הארגון, מפת ההזדמנויות, ההכרעה בין קנייה לפיתוח, והמדידה של מה שבאמת קרה. פותח על ידי אריאל נבו כפרויקט ייחוס להרצאה על בניית אפליקציות עם סוכני קוד.
+          </p>
+        </div>
       </div>
 
       <div>
