@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { GitCompareArrows, Trash2 } from 'lucide-react';
 import { useAppStore, type SavedScenario } from '../store/useAppStore';
 import { formatCompactIls, formatIls, simulate, type ScenarioResult } from '../finance/model';
-import { Button, Card, SectionTitle } from './ui';
+import { Button, Card, SectionTitle, inputCls } from './ui';
 
 function Pick({ slot, value, options, onChange }: { slot: 0 | 1; value: string | null; options: SavedScenario[]; onChange: (slot: 0 | 1, id: string | null) => void }) {
   return (
-    <select className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm" value={value ?? ''} onChange={(e) => onChange(slot, e.target.value || null)}>
+    <select className={inputCls} value={value ?? ''} onChange={(e) => onChange(slot, e.target.value || null)}>
       <option value="">בחר תרחיש {slot === 0 ? 'א' : 'ב'}</option>
       {options.map((s) => <option key={s.id} value={s.id}>{s.name} · {s.scopeLabel}</option>)}
     </select>
@@ -24,7 +24,7 @@ export function ComparisonView() {
     return (
       <Card>
         <SectionTitle title="השוואת תרחישים" sub='שמור שתי תצורות (למשל "רישיונות Copilot לכולם" מול "פיתוח ממוקד לשתי מחלקות") ותראה אותן זו לצד זו.' />
-        <div className="flex items-center gap-2 text-sm text-slate-500"><GitCompareArrows className="h-4 w-4" /> עדיין לא נשמרו תרחישים. השתמש ב"שמור להשוואה" בפאנל המחוונים.</div>
+        <div className="flex items-center gap-2 text-sm text-mute"><GitCompareArrows className="h-4 w-4" /> עדיין לא נשמרו תרחישים. השתמש ב"שמור להשוואה" בפאנל המחוונים.</div>
       </Card>
     );
   }
@@ -50,7 +50,7 @@ export function ComparisonView() {
       {a && b && results[0] && results[1] && (
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="text-xs text-slate-500">
+            <thead className="text-xs text-mute">
               <tr><th className="p-2 text-start">מדד</th><th className="p-2">{a.name}</th><th className="p-2">{b.name}</th><th className="p-2">הפרש (ב − א)</th></tr>
             </thead>
             <tbody>
@@ -60,26 +60,26 @@ export function ComparisonView() {
                 const diff = vb - va;
                 const good = row.higherIsBetter === false ? diff < 0 : diff > 0;
                 return (
-                  <tr key={row.label} className="border-t border-slate-100">
-                    <td className="p-2 font-semibold text-slate-700">{row.label}</td>
+                  <tr key={row.label} className="border-t border-line">
+                    <td className="p-2 font-semibold text-ink-2">{row.label}</td>
                     <td className="num p-2 text-center">{row.fmt(va)}</td>
                     <td className="num p-2 text-center">{row.fmt(vb)}</td>
-                    <td className={`num p-2 text-center font-bold ${diff === 0 ? 'text-slate-500' : good ? 'text-emerald-700' : 'text-rose-700'}`}>{row.label.includes('ROI') ? `${diff >= 0 ? '+' : ''}${diff.toFixed(0)} נק׳` : row.label.includes('חודש') || row.label.includes('משתמשים') || row.label.includes('שעות') ? `${diff >= 0 ? '+' : ''}${Math.round(diff).toLocaleString('he-IL')}` : (diff >= 0 ? '+' : '') + formatIls(diff)}</td>
+                    <td className={`num p-2 text-center font-bold ${diff === 0 ? 'text-mute' : good ? 'text-up' : 'text-down'}`}>{row.label.includes('ROI') ? `${diff >= 0 ? '+' : ''}${diff.toFixed(0)} נק׳` : row.label.includes('חודש') || row.label.includes('משתמשים') || row.label.includes('שעות') ? `${diff >= 0 ? '+' : ''}${Math.round(diff).toLocaleString('he-IL')}` : (diff >= 0 ? '+' : '') + formatIls(diff)}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
-          <div className="mt-2 grid gap-2 text-xs text-slate-500 md:grid-cols-2">
+          <div className="mt-2 grid gap-2 text-xs text-mute md:grid-cols-2">
             {[a, b].map((s) => s && <div key={s.id}>{s.name}: אימוץ {s.params.adoptionRate}% · התייעלות {s.params.efficiencyGain}% · מימוש {s.params.realizationRate}% · רישוי {formatIls(s.params.monthlyLicensePerUserIls)} · הקמה {formatCompactIls(s.params.oneTimeImplementationCostIls)}</div>)}
           </div>
         </div>
       )}
       <div className="mt-4 flex flex-wrap gap-2">
         {savedScenarios.map((s) => (
-          <span key={s.id} className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs">
-            {s.name} <span className="text-slate-400">· {s.scopeLabel}</span>
-            <Button variant="ghost" className="!p-0.5" title="מחק" onClick={() => deleteScenario(s.id)}><Trash2 className="h-3.5 w-3.5 text-slate-400" /></Button>
+          <span key={s.id} className="inline-flex items-center gap-1 rounded-full border border-line bg-paper-2/60 px-3 py-1 text-xs">
+            {s.name} <span className="text-mute">· {s.scopeLabel}</span>
+            <Button variant="ghost" className="!p-0.5" title="מחק" onClick={() => deleteScenario(s.id)}><Trash2 className="h-3.5 w-3.5 text-mute" /></Button>
           </span>
         ))}
       </div>

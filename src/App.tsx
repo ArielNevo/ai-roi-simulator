@@ -18,14 +18,15 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <TopNav />
-      <main className="mx-auto max-w-7xl px-4 py-6">
+      <main key={effective} className="animate-rise mx-auto max-w-7xl px-4 py-6 md:py-8">
         {effective === 1 && <Stage1Profiler />}
         {effective === 2 && <Stage2Opportunities />}
         {effective === 3 && <Stage3Simulator />}
         {effective === 4 && <Stage4Plan />}
       </main>
-      <footer className="no-print mx-auto max-w-7xl px-4 pb-8 text-center text-xs text-slate-400">
-        המספרים הם סימולציה על בסיס ההנחות שהוצגו, לא הצעת מחיר ולא ייעוץ פיננסי. הקוד הפיננסי פתוח ב-src/finance/model.ts.
+      <footer className="no-print mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 border-t border-line px-4 py-6 text-xs text-mute">
+        <span>המספרים הם סימולציה על בסיס ההנחות שהוצגו, לא הצעת מחיר ולא ייעוץ פיננסי.</span>
+        <span className="num">finance model: src/finance/model.ts · open source</span>
       </footer>
     </div>
   );
