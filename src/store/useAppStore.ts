@@ -8,7 +8,7 @@ import type {
   WorkflowStage,
 } from '../types/strategy';
 import { DEFAULT_PARAMS, getDefaultParams } from '../finance/model';
-import { PRESETS } from '../data/presets';
+import { PRESETS, closestPreset } from '../data/presets';
 
 export interface SavedScenario {
   id: string;
@@ -116,14 +116,32 @@ export const useAppStore = create<AppState>()(
         const { profile } = get();
         set({ isAnalyzing: true, errorMsg: null, analysisStep: 'שולח את פרופיל הארגון לניתוח…' });
         try {
-          const res = await fetch('/api/analyze', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ profile }),
-          });
-          const body = await res.json();
-          if (!res.ok) throw new Error(body?.error || 'שגיאה לא ידועה');
-          const analysis = body as StrategyAnalysisResult;
+          let analysis: StrategyAnalysisResult;
+          try {
+            const res = await fetch(`${import.meta.env.BASE_URL}api/analyze`.replace(/\/{2,}/g, '/'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ profile }),
+            });
+            const text = await res.text();
+            let body: { error?: string } & Partial<StrategyAnalysisResult> = {};
+            try { body = JSON.parse(text); } catch { throw new Error('NO_API'); }
+            if (!res.ok) throw new Error(body?.error || 'שגיאה לא ידועה');
+            analysis = body as StrategyAnalysisResult;
+          } catch (e) {
+            // Static hosting (GitHub Pages) or server down: the app still works
+            // with the closest built-in scenario, and says so.
+            const isNoApi = e instanceof TypeError || (e instanceof Error && e.message === 'NO_API');
+            if (!isNoApi) throw e;
+            const preset = closestPreset(profile);
+            analysis = {
+              ...preset.analysis,
+              generatedAt: new Date().toISOString(),
+              origin: 'fallback',
+              presetId: preset.id,
+              providerNote: 'גרסה זו רצה ללא שרת ניתוח (אירוח סטטי). מוצג התרחיש המובנה הקרוב ביותר לפרופיל שהזנת; להרצה עם מודל AI יש להריץ את השרת מקומית.',
+            };
+          }
           set({
             analysis,
             activePresetId: analysis.origin === 'fallback' ? analysis.presetId ?? null : null,

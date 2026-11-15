@@ -20,7 +20,7 @@ export function Stage1Profiler() {
   const [health, setHealth] = useState<{ provider: string } | null>(null);
 
   useEffect(() => {
-    fetch('/api/health').then((r) => r.json()).then(setHealth).catch(() => setHealth(null));
+    fetch(`${import.meta.env.BASE_URL}api/health`.replace(/\/{2,}/g, '/')).then((r) => r.json()).then(setHealth).catch(() => setHealth(null));
   }, []);
 
   const toggleBottleneck = (b: string) => {
