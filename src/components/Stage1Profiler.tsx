@@ -104,7 +104,7 @@ export function Stage1Profiler() {
           </div>
           <div>
             <div className="mb-1 flex items-center justify-between text-sm font-semibold text-slate-700"><span>בשלות דאטה נוכחית (1–5)</span><span className="num text-blue-700">{profile.dataMaturity}</span></div>
-            <input type="range" min={1} max={5} step={1} value={profile.dataMaturity} onChange={(e) => setProfile({ dataMaturity: Number(e.target.value) })} className="w-full" />
+            <input type="range" aria-label="בשלות דאטה" min={1} max={5} step={1} value={profile.dataMaturity} onChange={(e) => setProfile({ dataMaturity: Number(e.target.value) })} className="w-full" />
             <div className="mt-1 flex justify-between text-xs text-slate-500"><span>1 · מידע מפוזר, ללא בעלות</span><span>5 · דאטה מנוהל, נגיש ומתועד</span></div>
           </div>
         </div>

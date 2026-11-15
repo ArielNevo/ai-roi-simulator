@@ -85,7 +85,7 @@ export function Stage3Simulator() {
                   <span className="font-semibold text-slate-800">{s.label}</span>
                   <span className="flex items-center gap-2"><SourceTag source={paramSources[s.key]} /><b className="num text-blue-700">{s.fmt(params[s.key])}</b></span>
                 </div>
-                <input type="range" min={s.min} max={s.max} step={s.step} value={params[s.key]} onChange={(e) => setParam(s.key, Number(e.target.value))} className="mt-1 w-full" />
+                <input type="range" aria-label={s.label} min={s.min} max={s.max} step={s.step} value={params[s.key]} onChange={(e) => setParam(s.key, Number(e.target.value))} className="mt-1 w-full" />
                 <div className="text-xs text-slate-500">{s.hint}</div>
               </div>
             ))}
@@ -100,9 +100,9 @@ export function Stage3Simulator() {
           <Card>
             <SectionTitle title="תזרים מצטבר ל-36 חודשים" sub="שלושה תרחישים: פסימי, בסיס (לפי המחוונים) ואופטימי. ערך ממומש בלבד, לאחר רישוי ותחזוקה." />
             <div className="mb-3 grid grid-cols-3 gap-2 text-center text-xs">
-              <div className="rounded-lg bg-rose-50 p-2"><div className="text-slate-500">פסימי</div><div className="num font-bold text-rose-700">{formatCompactIls(sim.pessimistic.netValue3y)}</div></div>
-              <div className="rounded-lg bg-blue-50 p-2"><div className="text-slate-500">בסיס</div><div className="num font-bold text-blue-700">{formatCompactIls(b.netValue3y)}</div></div>
-              <div className="rounded-lg bg-emerald-50 p-2"><div className="text-slate-500">אופטימי</div><div className="num font-bold text-emerald-700">{formatCompactIls(sim.optimistic.netValue3y)}</div></div>
+              <div className="rounded-lg bg-rose-50 p-2"><div className="text-slate-500">פסימי</div><div className="num font-bold text-rose-700" dir="ltr">{formatCompactIls(sim.pessimistic.netValue3y)}</div></div>
+              <div className="rounded-lg bg-blue-50 p-2"><div className="text-slate-500">בסיס</div><div className="num font-bold text-blue-700" dir="ltr">{formatCompactIls(b.netValue3y)}</div></div>
+              <div className="rounded-lg bg-emerald-50 p-2"><div className="text-slate-500">אופטימי</div><div className="num font-bold text-emerald-700" dir="ltr">{formatCompactIls(sim.optimistic.netValue3y)}</div></div>
             </div>
             <div dir="ltr" className="h-72 w-full">
               <ResponsiveContainer>

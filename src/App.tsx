@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useAppStore } from './store/useAppStore';
 import { TopNav } from './components/TopNav';
 import { Stage1Profiler } from './components/Stage1Profiler';
@@ -9,6 +10,10 @@ export default function App() {
   const stage = useAppStore((s) => s.stage);
   const analysis = useAppStore((s) => s.analysis);
   const effective = analysis ? stage : 1;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [effective]);
 
   return (
     <div className="min-h-screen">
