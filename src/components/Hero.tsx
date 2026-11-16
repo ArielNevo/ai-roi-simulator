@@ -16,7 +16,7 @@ const ICONS = { university: Building2, government: Landmark, law: Scale };
 
 export function Hero({ onStart }: { onStart: () => void }) {
   const loadPreset = useAppStore((s) => s.loadPreset);
-  const [videoOk, setVideoOk] = useState(true);
+  const [imageOk, setImageOk] = useState(true);
   const stats = nimbusStats();
   const facts = [
     { n: PRESETS.length, label: 'תרחישים ישראליים מוכנים' },
@@ -29,17 +29,17 @@ export function Hero({ onStart }: { onStart: () => void }) {
     <div className="space-y-5">
       <section className="grain relative overflow-hidden rounded-[2rem] border border-line bg-paper-2 shadow-[0_30px_80px_-50px_rgba(20,22,26,0.5)]">
         <div className="absolute inset-0">
-          {videoOk ? (
+          {imageOk ? (
             <>
-              <video
-                className="animate-fade h-full w-full object-cover"
-                autoPlay muted loop playsInline preload="auto"
-                poster={`${MEDIA}hero-poster.jpg`}
-                onError={() => setVideoOk(false)}
+              <img
+                className="animate-fade h-full w-full object-cover object-[35%_45%]"
+                src={`${MEDIA}hero-summit.jpg`}
+                onError={() => setImageOk(false)}
+                alt=""
                 aria-hidden
-              >
-                <source src={`${MEDIA}hero-loop.mp4`} type="video/mp4" />
-              </video>
+                decoding="async"
+                fetchPriority="high"
+              />
               <div className="absolute inset-0 bg-gradient-to-l from-paper/90 via-paper/55 to-paper/5 lg:from-paper/85 lg:via-paper/40" />
               <div className="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-paper/70 to-transparent" />
             </>
