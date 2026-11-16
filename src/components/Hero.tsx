@@ -13,11 +13,6 @@ const MEDIA = `${import.meta.env.BASE_URL}media/`.replace(/\/{2,}/g, '/');
 
 const ICONS = { university: Building2, government: Landmark, law: Scale };
 
-const QUESTIONS: { q: string; presetId: string }[] = [
-  { q: 'איזו יוזמה מחזירה את ההשקעה בתוך שנה?', presetId: 'ariel-nevo-law' },
-  { q: 'מה קורה לתקציב אם האימוץ נתקע על 30%?', presetId: 'huji-business-school' },
-  { q: 'מה מותר לגוף ממשלתי לרכוש בנימבוס?', presetId: 'corporations-authority' },
-];
 
 export function Hero({ onStart }: { onStart: () => void }) {
   const loadPreset = useAppStore((s) => s.loadPreset);
@@ -45,13 +40,14 @@ export function Hero({ onStart }: { onStart: () => void }) {
               >
                 <source src={`${MEDIA}hero-loop.mp4`} type="video/mp4" />
               </video>
-              <div className="absolute inset-0 bg-gradient-to-l from-paper/55 via-paper/10 to-transparent lg:from-paper/40" />
+              <div className="absolute inset-0 bg-gradient-to-l from-paper/90 via-paper/55 to-paper/5 lg:from-paper/85 lg:via-paper/40" />
+              <div className="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-paper/70 to-transparent" />
             </>
           ) : (
             <GenerativeLandscape />
           )}
         </div>
-        <div className="relative grid min-h-[560px] grid-cols-1 content-start gap-6 p-7 pb-12 md:p-12 lg:min-h-[600px] lg:grid-cols-12">
+        <div className="relative grid min-h-[560px] grid-cols-1 content-start gap-6 p-7 pb-0 md:p-12 md:pb-0 lg:min-h-[620px] lg:grid-cols-12">
           <div className="animate-rise lg:col-span-7">
             <div className="mb-5"><Logo variant="nav" className="h-7" /></div>
             <div className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper/80 px-3 py-1 text-[11px] font-semibold tracking-wide text-ink-2 backdrop-blur">
@@ -73,15 +69,7 @@ export function Hero({ onStart }: { onStart: () => void }) {
             </div>
           </div>
 
-          <div className="stagger flex flex-col gap-2 self-end lg:col-span-5 lg:items-end">
-            <div style={{ '--i': 2 } as React.CSSProperties} className="mb-2 w-full lg:w-[26rem]"><Presenter /></div>
-            {QUESTIONS.map((x, i) => (
-              <button key={x.q} style={{ '--i': i + 3 } as React.CSSProperties} onClick={() => loadPreset(x.presetId)} className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-ink/10 bg-paper/85 px-4 py-3 text-start text-sm font-medium text-ink shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-ink hover:shadow-md lg:w-[26rem]">
-                <span>{x.q}</span>
-                <ArrowLeft className="h-4 w-4 shrink-0 text-signal transition-transform group-hover:-translate-x-1" />
-              </button>
-            ))}
-          </div>
+          <div className="lg:col-span-5"><Presenter onStart={onStart} /></div>
         </div>
       </section>
 

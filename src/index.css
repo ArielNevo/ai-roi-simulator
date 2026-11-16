@@ -171,3 +171,7 @@ select {
 
 /* Presenter card */
 .presenter-ring { background: conic-gradient(from 0deg, #ff7a59, #f4c542, #8fcf7a, #9fd0ff, #b7a4f0, #2b3cff, #ff7a59); }
+
+/* Idle "breathing" for the presenter cutout */
+@keyframes breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-2px) scale(1.012); } }
+.animate-breathe { transform-origin: bottom center; animation: breathe 4.5s ease-in-out infinite; }
